@@ -7,20 +7,20 @@ public class MountainLayerController : MonoBehaviour
     TileController[] myTiles;
     int leftTiles = 0;
 
+    [SerializeField] float rotateTimer = .5f;
+    [SerializeField] int numLefts = 4;
 
-    float randomTimer = 4f;
+
+    float randomTimer;
 
     // Start is called before the first frame update
     void Start()
     {
         myTiles = GetComponentsInChildren<TileController>();
         InitialRandomDirection();
-        //print(gameObject.name + " my tiles: " + myTiles.Length);
         GetNumberLeftTiles();
-        //foreach (TileController tile in myTiles)
-        //{
-        //    tile.SetLeft(false);
-        //}
+        randomTimer = rotateTimer;
+
 
     }
 
@@ -35,8 +35,9 @@ public class MountainLayerController : MonoBehaviour
         randomTimer -= Time.deltaTime;
         if (randomTimer <= 0)
         {
-            InitialRandomDirection();
-            randomTimer = 4f;
+            //RotateCounterClockwise();
+            //RotateClockwise();
+            randomTimer = rotateTimer;
         }
 
     }
@@ -55,8 +56,8 @@ public class MountainLayerController : MonoBehaviour
 
     void InitialRandomDirection()
     {
-        int leftRemaining = 4;
-        int rightRemaining = 4;
+        int leftRemaining = numLefts;
+        int rightRemaining = 8-leftRemaining;
         foreach (TileController tile in myTiles)
         {
             bool willBeLeft = (Random.value > 0.5f);
@@ -76,6 +77,30 @@ public class MountainLayerController : MonoBehaviour
                 leftRemaining -= 1;
             }
         }
+    }
+
+    // Rotates the Directions Counterclockwise by 1
+    void RotateCounterClockwise()
+    {
+        bool firstTileIsLeft = myTiles[0].GetTileIsLeft();
+        for (int i = 0; i < myTiles.Length-1; i++)
+        {
+            myTiles[i].SetLeft(myTiles[i + 1].GetTileIsLeft());
+        }
+        myTiles[myTiles.Length - 1].SetLeft(firstTileIsLeft);
+    }
+
+    // Rotates the Directions Clockwise by 1
+    void RotateClockwise()
+    {
+        bool lastTileIsLeft = myTiles[myTiles.Length-1].GetTileIsLeft();
+        //myTiles[0].SetLeft(myTiles[myTiles.Length - 1].GetTileIsLeft());
+        for (int i = myTiles.Length-1; i > 0; i--)
+        {
+            myTiles[i].SetLeft(myTiles[i - 1].GetTileIsLeft());
+        }
+        myTiles[0].SetLeft(lastTileIsLeft);
+
     }
 
 
