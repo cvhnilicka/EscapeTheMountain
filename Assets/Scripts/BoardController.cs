@@ -12,15 +12,23 @@ public class BoardController : MonoBehaviour
     float randomTimer;
     [SerializeField] float rotateTimer = 5f;
 
+    bool setUp = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
         GetMountainLayers();
-        //midLayer.SetInitialSnow(2);
         SetInitialSnow();
         randomTimer = rotateTimer;
+        setUp = true;
 
+
+    }
+
+    public bool GetSetUp()
+    {
+        return this.setUp;
     }
 
     private void GetMountainLayers()
@@ -86,7 +94,6 @@ public class BoardController : MonoBehaviour
     {
         if (peakLayer.CheckAvalanches())
         {
-            //print("PEAK HAS AN AVALANCHE");
             CascadeAvalanche(peakLayer, midLayer);
         }
         if (midLayer.CheckAvalanches())
