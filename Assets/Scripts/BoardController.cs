@@ -65,7 +65,7 @@ public class BoardController : MonoBehaviour
     void SetInitialSnow()
     {
         SetLayerSnow(peakLayer, 5);
-        SetLayerSnow(midLayer, 1);
+        SetLayerSnow(midLayer, 3);
         SetLayerSnow(baseLayer, 0);
     }
 
@@ -74,7 +74,7 @@ public class BoardController : MonoBehaviour
         foreach (TileController tile in layer.GetMyTiles())
         {
             // for now just set all even tiles as snow
-            if (tile.GetMyId() == 0)
+            if (tile.GetMyId() % 2 == 0)
             {
                 // set all as 2 for now but i want to randomize it at somepoint
                 tile.SetMySnow(amt);
@@ -86,8 +86,12 @@ public class BoardController : MonoBehaviour
     {
         if (peakLayer.CheckAvalanches())
         {
-            print("PEAK HAS AN AVALANCHE");
+            //print("PEAK HAS AN AVALANCHE");
             CascadeAvalanche(peakLayer, midLayer);
+        }
+        if (midLayer.CheckAvalanches())
+        {
+            CascadeAvalanche(midLayer, baseLayer);
         }
     }
 
@@ -119,6 +123,12 @@ public class BoardController : MonoBehaviour
                     belowTiles[0].AddSnow(aboveTiles[i].GetTileSnowCount()-1);
                     aboveTiles[i].SetMySnow(1);
                 }
+                //else if (i == aboveTiles.Length - 1 && aboveTiles[i].GetTileIsLeft())
+                //{
+                //    // need to rotate last to first spot
+                //    belowTiles[i-1].AddSnow(aboveTiles[i].GetTileSnowCount() - 1);
+                //    aboveTiles[i].SetMySnow(1);
+                //}
 
                 else if (i > 0 && i < aboveTiles.Length && aboveTiles[i].GetTileIsLeft())
                 {
