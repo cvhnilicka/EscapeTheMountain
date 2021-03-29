@@ -40,27 +40,10 @@ public class MountainLayerController : MonoBehaviour
         foreach (TileController tile in myTiles)
         {
             tile.SetMyId(id);
-            //if (id % 2 == 0) tile.SetMySnow(2);
             id += 1;
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //Timers();
-    }
-
-    void Timers()
-    {
-        randomTimer -= Time.deltaTime;
-        if (randomTimer <= 0)
-        {
-
-            randomTimer = rotateTimer;
-        }
-
-    }
 
     public LAYER_LEVEL MyLevel() { return this.myLayerLevel;   }
 
@@ -142,8 +125,7 @@ public class MountainLayerController : MonoBehaviour
 
     public void SetInitialSnow(int amt)
     {
-        //print(myTiles.Length);
-        //if (myTiles == null) return;
+
         foreach (TileController tile in myTiles)
         {
             // for now just set all even tiles as snow

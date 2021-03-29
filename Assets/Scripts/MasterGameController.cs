@@ -5,7 +5,7 @@ using UnityEngine;
 public class MasterGameController : MonoBehaviour
 {
     public enum GAME_STATES { SETUP, PLAY, END }
-    public enum PLAY_STATE { PLAYER, ENVIRONMENT, WAITING }
+    public enum PLAY_STATE { PLAYER, ENVIRONMENTPRE, ENVIRONMENTPOST, WAITING }
 
     GAME_STATES currentGameState;
     PLAY_STATE currentPlayState;
@@ -45,9 +45,16 @@ public class MasterGameController : MonoBehaviour
         }
         else if (currentPlayState == PLAY_STATE.PLAYER)
         {
-            currentPlayState = PLAY_STATE.ENVIRONMENT;
+            currentPlayState = PLAY_STATE.ENVIRONMENTPRE;
+            // IN THIS STATE THE GAME WILL DRAW IS ENV CARDS AND ADD SNOW
         }
-        else if (currentPlayState == PLAY_STATE.ENVIRONMENT)
+        else if (currentPlayState == PLAY_STATE.ENVIRONMENTPRE)
+        {
+            currentPlayState = PLAY_STATE.ENVIRONMENTPOST;
+            // IN THIS STATE WE WILL NEED TO DO THE AVALANCHE STUFF AND POST
+            // ENV CARDS ACTIONS
+        }
+        else if (currentPlayState == PLAY_STATE.ENVIRONMENTPOST)
         {
             currentPlayState = PLAY_STATE.PLAYER;
         }
@@ -62,9 +69,27 @@ public class MasterGameController : MonoBehaviour
             // in the play loop
             Timers();
 
+            if (currentPlayState == PLAY_STATE.ENVIRONMENTPRE)
+            {
+                //print("SNOWFALLLLLLLLLL");
+                myBoard.SnowFall();
+                SwapPlayState();
+                randomTimer = rotateTimer;
+
+            }
+
+
+            else if (currentPlayState == PLAY_STATE.ENVIRONMENTPOST)
+            {
+                // avalanche control
+                myBoard.RunAvalanchesCheck();
+                SwapPlayState();
+                randomTimer = rotateTimer;
+
+            }
 
         }
-        DisplayGameStates();
+        //DisplayGameStates();
     }
 
     void CheckBoardState()
