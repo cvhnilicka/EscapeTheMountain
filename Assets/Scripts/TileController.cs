@@ -8,7 +8,7 @@ public class TileController : MonoBehaviour
     SnowController mySnowStack;
     DirectionController myDirection;
 
-    private int myId;
+    public int myId;
 
     private void Awake()
     {

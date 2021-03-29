@@ -71,7 +71,6 @@ public class MountainLayerController : MonoBehaviour
         {
             if (tile.GetTileIsLeft()) { leftTiles += 1; }
         }
-        print(gameObject.name + " has " + leftTiles + " left tiles");
         return leftTiles;
     }
 
