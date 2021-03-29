@@ -6,17 +6,11 @@ public class DirectionController : MonoBehaviour
 {
 
     Animator myDirectionAnim;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         myDirectionAnim = GetComponent<Animator>();
-        //myDirectionAnim.SetBool("Left", false);
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void SetLeft(bool isleft)

@@ -4,30 +4,51 @@ using UnityEngine;
 
 public class MountainLayerController : MonoBehaviour
 {
+
+    public enum LAYER_LEVEL {  BASE, MID, PEAK };
+
+
     TileController[] myTiles;
     int leftTiles = 0;
 
     [SerializeField] float rotateTimer = .5f;
     [SerializeField] int numLefts = 4;
+    [SerializeField] LAYER_LEVEL myLayerLevel;
 
 
     float randomTimer;
 
+    // very first initalization method called
+    private void Awake()
+    {
+        myTiles = GetComponentsInChildren<TileController>();
+        SetTileIds();
+        InitialRandomDirection();
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        myTiles = GetComponentsInChildren<TileController>();
-        InitialRandomDirection();
         GetNumberLeftTiles();
         randomTimer = rotateTimer;
+    }
 
-
+    void SetTileIds()
+    {
+        int id = 0;
+        foreach (TileController tile in myTiles)
+        {
+            tile.SetMyId(id);
+            //if (id % 2 == 0) tile.SetMySnow(2);
+            id += 1;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Timers();
+        //Timers();
     }
 
     void Timers()
@@ -35,12 +56,13 @@ public class MountainLayerController : MonoBehaviour
         randomTimer -= Time.deltaTime;
         if (randomTimer <= 0)
         {
-            //RotateCounterClockwise();
-            //RotateClockwise();
+
             randomTimer = rotateTimer;
         }
 
     }
+
+    public LAYER_LEVEL MyLevel() { return this.myLayerLevel;   }
 
     public int GetNumberLeftTiles()
     {
@@ -69,6 +91,7 @@ public class MountainLayerController : MonoBehaviour
             else if (rightRemaining > 0)
             {
                 tile.SetLeft(false);
+                //tile.SetMySnow(3);
                 rightRemaining -= 1;
             }
             else
@@ -77,6 +100,11 @@ public class MountainLayerController : MonoBehaviour
                 leftRemaining -= 1;
             }
         }
+    }
+
+    public TileController[] GetMyTiles()
+    {
+        return this.myTiles;
     }
 
     // Rotates the Directions Counterclockwise by 1
@@ -101,6 +129,31 @@ public class MountainLayerController : MonoBehaviour
         }
         myTiles[0].SetLeft(lastTileIsLeft);
 
+    }
+
+
+    public bool CheckAvalanches()
+    {
+        foreach (TileController tile in myTiles)
+        {
+            if (tile.HasAvalanche()) return true;
+        }
+        return false;
+    }
+
+    public void SetInitialSnow(int amt)
+    {
+        //print(myTiles.Length);
+        //if (myTiles == null) return;
+        foreach (TileController tile in myTiles)
+        {
+            // for now just set all even tiles as snow
+            if (tile.GetMyId() % 2 == 0)
+            {
+                // set all as 2 for now but i want to randomize it at somepoint
+                tile.SetMySnow(amt);
+            }
+        }
     }
 
 

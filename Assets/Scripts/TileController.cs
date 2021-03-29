@@ -8,33 +8,54 @@ public class TileController : MonoBehaviour
     SnowController mySnowStack;
     DirectionController myDirection;
 
-    // Start is called before the first frame update
-    void Start()
+    private int myId;
+
+    private void Awake()
     {
         mySnowStack = GetComponentInChildren<SnowController>();
         myDirection = GetComponentInChildren<DirectionController>();
     }
 
+    // Getters dude
+    public int GetTileSnowCount() { return this.mySnowStack.GetSnowCount(); }
+
+
+    public bool GetTileIsLeft()
+    {
+        return myDirection.IsLeft();
+    }
+
+    public bool HasAvalanche()
+    {
+        if (mySnowStack.GetSnowCount() > 4) { return true; }
+        return false;
+    }
+
+
+    public int GetMyId()
+    {
+        return this.myId;
+
+    }
+
+    public void SetMyId(int id)
+    {
+        myId = id;
+    }
+
+    public void SetMySnow(int snowAmt)
+    {
+        mySnowStack.SetSnowCount(snowAmt);
+    }
+
+    public void AddSnow(int toAdd)
+    {
+        mySnowStack.AddSnow(toAdd);
+    }
 
     public void SetLeft(bool isleft)
     {
         myDirection.SetLeft(isleft);
     }
 
-    public bool GetTileIsLeft()
-    {
-        //if (!myDirection) myDirection = GetComponentInChildren<DirectionController>();
-        return myDirection.IsLeft();
-    }
-
-    //public void SetIsLeft(bool isleft)
-    //{
-    //    myDirection.SetLeft(isleft);
-    //}
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
