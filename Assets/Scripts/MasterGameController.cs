@@ -67,6 +67,7 @@ public class MasterGameController : MonoBehaviour
         {
             currentPlayState = PLAY_STATE.PLAYER;
         }
+        //randomTimer = rotateTimer;
     }
 
     // Update is called once per frame
@@ -80,16 +81,12 @@ public class MasterGameController : MonoBehaviour
 
             if (currentPlayState == PLAY_STATE.ENVIRONMENTPRE)
             {
-                print("SNOWFALLLLLLLLLL");
                 // here i need to add in the "draw a card and do that action"
                 EnvironmentCardAction(DrawEnvironmentCard());
-                //myBoard.SnowFall();
                 SwapPlayState();
                 randomTimer = rotateTimer;
 
             }
-
-
             else if (currentPlayState == PLAY_STATE.ENVIRONMENTPOST)
             {
                 // avalanche control
@@ -107,9 +104,10 @@ public class MasterGameController : MonoBehaviour
     {
         ENVIRONMENT_CARD_TYPES drewCard = currentEnvironmentDeck[environmentCardIndex];
         environmentCardIndex += 1;
-        if (environmentCardIndex > currentEnvironmentDeck.Length) currentEnvironmentDeck =  ShuffleDeck();
+        if (environmentCardIndex == currentEnvironmentDeck.Length) currentEnvironmentDeck =  ShuffleDeck();
         return drewCard;
     }
+
 
     void EnvironmentCardAction(ENVIRONMENT_CARD_TYPES drewCard)
     {

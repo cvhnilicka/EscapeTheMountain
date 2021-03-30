@@ -112,6 +112,7 @@ public class BoardController : MonoBehaviour
 
     public void WhiteOut()
     {
+        // This is just the basics right now. In the future we will want to control what layer and that direction
         midLayer.RotateClockwise();
     }
 
