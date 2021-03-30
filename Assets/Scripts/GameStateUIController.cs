@@ -7,17 +7,22 @@ public class GameStateUIController : MonoBehaviour
 {
 
     static GameObject stateTextObj;
-   
+    static GameObject lastEnvCard;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         foreach (Transform child in transform)
         {
-            if (child.name == "GSText")
+            switch(child.name)
             {
-                stateTextObj = child.gameObject; 
-            }
+                case "GSText": stateTextObj = child.gameObject;
+                    break;
+                case "LECText": lastEnvCard = child.gameObject;
+                    break;
+            }            
         }
     }
 
@@ -25,6 +30,11 @@ public class GameStateUIController : MonoBehaviour
     public static void SetGameState(string txt)
     {
         stateTextObj.GetComponent<Text>().text = txt;
+    }
+
+    public static void SetLEC(string txt)
+    {
+        lastEnvCard.GetComponent<Text>().text = txt;
     }
 
 

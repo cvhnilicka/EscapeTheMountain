@@ -51,6 +51,11 @@ public class MasterGameController : MonoBehaviour
         GameStateUIController.SetGameState(state.ToString());
     }
 
+    void UpdateLECUI(ENVIRONMENT_CARD_TYPES envcard)
+    {
+        GameStateUIController.SetLEC(envcard.ToString());
+    }
+
     void SwapPlayState()
     {
         if (currentPlayState == PLAY_STATE.WAITING)
@@ -115,6 +120,7 @@ public class MasterGameController : MonoBehaviour
         ENVIRONMENT_CARD_TYPES drewCard = currentEnvironmentDeck[environmentCardIndex];
         environmentCardIndex += 1;
         if (environmentCardIndex == currentEnvironmentDeck.Length) currentEnvironmentDeck =  ShuffleDeck();
+        UpdateLECUI(drewCard);
         return drewCard;
     }
 
