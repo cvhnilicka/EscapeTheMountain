@@ -47,16 +47,18 @@ public class AdventurerController : MonoBehaviour
     public SnowController test;
 
 
+    private GameInformation.ADVENTURERS adventurertype;
+    private int health;
+    private int carrylimit;
     
+
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        //transform.position = new Vector2(test.gameObject.transform.position.x, test.gameObject.transform.position.y);
-        //transform.rotation = test.gameObject.transform.rotation;
 
-        print("AN ADVENTURERS APPEARS");
     }
 
     // Update is called once per frame
@@ -64,4 +66,22 @@ public class AdventurerController : MonoBehaviour
     {
         
     }
+
+
+    public void DisplayStats()
+    {
+        print("Adventurer: " + this.adventurertype.ToString());
+        print("Health: " + this.health + "\tCarryLimit: " + this.carrylimit+"\n");
+
+    }
+
+
+    public void SetAdventurerType(GameInformation.ADVENTURERS adventurertype) { this.adventurertype = adventurertype; }
+    public GameInformation.ADVENTURERS GetAdventurerType() { return this.adventurertype;  }
+
+    public void SetHealth(int health) { this.health = health; }
+    public int GetHealth() { return this.health; }
+
+    public void SetCarryLimit(int carrylimit) { this.carrylimit = carrylimit; }
+    public int GetCarryLimit() { return this.carrylimit;  }
 }

@@ -12,6 +12,7 @@ public class MasterGameController : MonoBehaviour
     PLAY_STATE currentPlayState;
 
     BoardController myBoard;
+    AdventurersController adventurers;
 
 
     float randomTimer;
@@ -28,6 +29,7 @@ public class MasterGameController : MonoBehaviour
         currentGameState = GAME_STATES.SETUP;
         currentPlayState = PLAY_STATE.WAITING;
         myBoard = GetComponentInChildren<BoardController>();
+        adventurers = GetComponentInChildren<AdventurersController>();
         DisplayGameStates();
         currentEnvironmentDeck = ShuffleDeck();
         //PrintDecks();
@@ -61,7 +63,8 @@ public class MasterGameController : MonoBehaviour
         if (currentPlayState == PLAY_STATE.WAITING)
         {
             currentPlayState = PLAY_STATE.PLAYER;
-            
+            adventurers.SetPlayerInTurn(true);
+
         }
         else if (currentPlayState == PLAY_STATE.PLAYER)
         {
@@ -77,6 +80,7 @@ public class MasterGameController : MonoBehaviour
         else if (currentPlayState == PLAY_STATE.ENVIRONMENTPOST)
         {
             currentPlayState = PLAY_STATE.PLAYER;
+            adventurers.SetPlayerInTurn(true);
         }
         UpdateGameStateUI(currentPlayState);
         //randomTimer = rotateTimer;
@@ -105,6 +109,20 @@ public class MasterGameController : MonoBehaviour
                 SwapPlayState();
                 randomTimer = rotateTimer;
 
+            }
+            else if (currentPlayState == PLAY_STATE.PLAYER)
+            {
+                // here will be the player stuff
+                if (adventurers.GetPlayerInTurn())
+                {
+                    // player is still making actions
+                    print("PLAYER IN ACTION");
+                } else
+                {
+                    // player is done
+                    SwapPlayState();
+                    randomTimer = rotateTimer;
+                }
             }
             else
             {
