@@ -46,11 +46,17 @@ public class MasterGameController : MonoBehaviour
 
     }
 
+    void UpdateGameStateUI(PLAY_STATE state)
+    {
+        GameStateUIController.SetGameState(state.ToString());
+    }
+
     void SwapPlayState()
     {
         if (currentPlayState == PLAY_STATE.WAITING)
         {
             currentPlayState = PLAY_STATE.PLAYER;
+            
         }
         else if (currentPlayState == PLAY_STATE.PLAYER)
         {
@@ -67,6 +73,7 @@ public class MasterGameController : MonoBehaviour
         {
             currentPlayState = PLAY_STATE.PLAYER;
         }
+        UpdateGameStateUI(currentPlayState);
         //randomTimer = rotateTimer;
     }
 
@@ -77,7 +84,6 @@ public class MasterGameController : MonoBehaviour
         if (currentGameState == GAME_STATES.PLAY)
         {
             // in the play loop
-            Timers();
 
             if (currentPlayState == PLAY_STATE.ENVIRONMENTPRE)
             {
@@ -94,6 +100,10 @@ public class MasterGameController : MonoBehaviour
                 SwapPlayState();
                 randomTimer = rotateTimer;
 
+            }
+            else
+            {
+                Timers();
             }
 
         }
