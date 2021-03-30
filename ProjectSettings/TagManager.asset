@@ -44,3 +44,6 @@ TagManager:
   - name: boardinfo
     uniqueID: 3554819085
     locked: 0
+  - name: adventurers
+    uniqueID: 1262930045
+    locked: 0
