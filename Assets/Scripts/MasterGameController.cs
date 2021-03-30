@@ -29,7 +29,7 @@ public class MasterGameController : MonoBehaviour
         myBoard = GetComponentInChildren<BoardController>();
         DisplayGameStates();
         currentEnvironmentDeck = ShuffleDeck();
-        PrintDecks();
+        //PrintDecks();
         if (!DeckChecker()) print("Something wrong with deck");
         else print("Deck Is Proper");
     }
@@ -97,7 +97,6 @@ public class MasterGameController : MonoBehaviour
             }
 
         }
-        //DisplayGameStates();
     }
 
     void CheckBoardState()
@@ -125,12 +124,6 @@ public class MasterGameController : MonoBehaviour
     ENVIRONMENT_CARD_TYPES[] ShuffleDeck()
     {
         ENVIRONMENT_CARD_TYPES[] ret = UNSHUFFLED_DECK;
-        //for (int i = currentEnvironmentDeck.Length-1; i > 0; i--)
-        //{
-        //    int r = Random.Range(0, i);
-        //    currentEnvironmentDeck[r] = UNSHUFFLED_DECK[i];
-        //}
-
         for(int i = 0; i < ret.Length; i++)
         {
             int r = Random.Range(i, ret.Length);
