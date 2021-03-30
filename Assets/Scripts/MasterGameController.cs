@@ -20,6 +20,7 @@ public class MasterGameController : MonoBehaviour
 
     // Deck Info
     ENVIRONMENT_CARD_TYPES[] currentEnvironmentDeck;
+    private int environmentCardIndex;
 
     // Start is called before the first frame update
     void Start()
@@ -79,8 +80,10 @@ public class MasterGameController : MonoBehaviour
 
             if (currentPlayState == PLAY_STATE.ENVIRONMENTPRE)
             {
-                //print("SNOWFALLLLLLLLLL");
-                myBoard.SnowFall();
+                print("SNOWFALLLLLLLLLL");
+                // here i need to add in the "draw a card and do that action"
+                EnvironmentCardAction(DrawEnvironmentCard());
+                //myBoard.SnowFall();
                 SwapPlayState();
                 randomTimer = rotateTimer;
 
@@ -96,6 +99,38 @@ public class MasterGameController : MonoBehaviour
 
             }
 
+        }
+    }
+
+
+    ENVIRONMENT_CARD_TYPES DrawEnvironmentCard()
+    {
+        ENVIRONMENT_CARD_TYPES drewCard = currentEnvironmentDeck[environmentCardIndex];
+        environmentCardIndex += 1;
+        if (environmentCardIndex > currentEnvironmentDeck.Length) currentEnvironmentDeck =  ShuffleDeck();
+        return drewCard;
+    }
+
+    void EnvironmentCardAction(ENVIRONMENT_CARD_TYPES drewCard)
+    {
+        switch (drewCard)
+        {
+            case ENVIRONMENT_CARD_TYPES.SNOWFALLALL:
+                myBoard.SnowFall(ENVIRONMENT_CARD_TYPES.SNOWFALLALL);
+                break;
+            case ENVIRONMENT_CARD_TYPES.SNOWFALLEVEN:
+                myBoard.SnowFall(ENVIRONMENT_CARD_TYPES.SNOWFALLEVEN);
+                break;
+            case ENVIRONMENT_CARD_TYPES.SNOWFALLODD:
+                myBoard.SnowFall(ENVIRONMENT_CARD_TYPES.SNOWFALLODD);
+                break;
+            case ENVIRONMENT_CARD_TYPES.WHITEOUT:
+                print("WhiteOUT");
+                myBoard.WhiteOut();
+                break;
+            default:
+                print("OTHER CARD");
+                break;
         }
     }
 
@@ -131,6 +166,7 @@ public class MasterGameController : MonoBehaviour
             ret[r] = ret[i];
             ret[i] = t;
         }
+        environmentCardIndex = 0;
         return ret;
     }
 

@@ -101,7 +101,7 @@ public class MountainLayerController : MonoBehaviour
     }
 
     // Rotates the Directions Clockwise by 1
-    void RotateClockwise()
+    public void RotateClockwise()
     {
         bool lastTileIsLeft = myTiles[myTiles.Length-1].GetTileIsLeft();
         //myTiles[0].SetLeft(myTiles[myTiles.Length - 1].GetTileIsLeft());

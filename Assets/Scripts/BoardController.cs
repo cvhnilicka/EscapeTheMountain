@@ -82,7 +82,7 @@ public class BoardController : MonoBehaviour
         {
             // for now just set all even tiles as snow
             //if (tile.GetMyId() % 2 == 0)
-            if (tile.GetMyId() == 0)
+            if (tile.GetMyId() % 2 == 0)
             {
                 // set all as 2 for now but i want to randomize it at somepoint
                 tile.SetMySnow(amt);
@@ -94,7 +94,53 @@ public class BoardController : MonoBehaviour
     {
 
         // this is temp for now but will need to figure out a way to add snowfall better
-        peakLayer.GetMyTiles()[0].AddSnow(3);
+        foreach (TileController tile in peakLayer.GetMyTiles())
+        {
+            // for now just set all even tiles as snow
+            //if (tile.GetMyId() % 2 == 0)
+            bool willBeLeft = (Random.value > 0.5f);
+            int match = 0;
+            if (willBeLeft) match = 1;
+            if (tile.GetMyId() % 2 == match)
+            {
+                // set all as 2 for now but i want to randomize it at somepoint
+                //print("Match: " + match);
+                tile.AddSnow(1);
+            }
+        }
+    }
+
+    public void WhiteOut()
+    {
+        midLayer.RotateClockwise();
+    }
+
+    public void SnowFall(GameInformation.ENVIRONMENT_CARD_TYPES type)
+    {
+        bool all = false;
+        int match = 0;
+
+        if (type == GameInformation.ENVIRONMENT_CARD_TYPES.SNOWFALLALL)
+        {
+            all = true;
+        }
+        if (type == GameInformation.ENVIRONMENT_CARD_TYPES.SNOWFALLODD) match = 1;
+        foreach (TileController tile in peakLayer.GetMyTiles())
+        {
+            if (!all)
+            {
+                if (tile.GetMyId() % 2 == match)
+                {
+                    // set all as 2 for now but i want to randomize it at somepoint
+                    //print("Match: " + match);
+                    tile.AddSnow(1);
+                }
+            }
+            else
+            {
+                tile.AddSnow(1);
+            }
+        }
     }
 
 
@@ -114,9 +160,7 @@ public class BoardController : MonoBehaviour
         }
         if (midLayer.CheckAvalanches())
         {
-            print("Mid Layer Avalanche");
-            //Debug.Break();
-            //CascadeAvalanche(midLayer, baseLayer);
+            CascadeAvalanche(midLayer, baseLayer);
         }
     }
 
@@ -132,15 +176,15 @@ public class BoardController : MonoBehaviour
                 // here i need to cascade them down
                 if (i == 0 && aboveTiles[i].GetTileIsLeft())
                 {
-                    print("A");
+                    //print("A");
                     // need to rotate back tile to first tile
-                    print("SnowCount: " + (aboveTiles[i].GetTileSnowCount()-1));
+                    //print("SnowCount: " + (aboveTiles[i].GetTileSnowCount()-1));
                     belowTiles[belowTiles.Length - 1].AddSnow(aboveTiles[i].GetTileSnowCount() - 1);
                     aboveTiles[i].SetMySnow(1);
                 }
                 else if (i == 0 && !aboveTiles[i].GetTileIsLeft())
                 {
-                    print("B");
+                    //print("B");
 
                     // need to rotate back tile to first tile
                     belowTiles[i + 1].AddSnow(aboveTiles[i].GetTileSnowCount() - 1);
@@ -148,7 +192,7 @@ public class BoardController : MonoBehaviour
                 }
                 else if (i == aboveTiles.Length-1 && !aboveTiles[i].GetTileIsLeft())
                 {
-                    print("C");
+                    //print("C");
 
                     // need to rotate last to first spot
                     belowTiles[0].AddSnow(aboveTiles[i].GetTileSnowCount()-1);
@@ -163,14 +207,14 @@ public class BoardController : MonoBehaviour
 
                 else if (i > 0 && i < aboveTiles.Length && aboveTiles[i].GetTileIsLeft())
                 {
-                    print("D");
+                    //print("D");
 
                     belowTiles[i - 1].AddSnow(aboveTiles[i].GetTileSnowCount() - 1);
                     aboveTiles[i].SetMySnow(1);
                 }
                 else if (i > 0 && i < aboveTiles.Length && !aboveTiles[i].GetTileIsLeft())
                 {
-                    print("E");
+                    //print("E");
 
                     belowTiles[i + 1].AddSnow(aboveTiles[i].GetTileSnowCount() - 1);
                     aboveTiles[i].SetMySnow(1);
