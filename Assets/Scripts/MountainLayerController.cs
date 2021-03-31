@@ -89,6 +89,15 @@ public class MountainLayerController : MonoBehaviour
         return this.myTiles;
     }
 
+    public TileController GetTileById(int id)
+    {
+        foreach(TileController tile in myTiles)
+        {
+            if (tile.GetMyId() == id) return tile;
+        }
+        return null;
+    }
+
     // Rotates the Directions Counterclockwise by 1
     void RotateCounterClockwise()
     {

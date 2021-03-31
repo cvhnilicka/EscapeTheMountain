@@ -58,6 +58,8 @@ public class AdventurersController : MonoBehaviour
     AdventurerController InitializeCook()
     {
         GameObject cook = Instantiate(adventurerPrefab, new Vector2(startTileTEST.transform.position.x, startTileTEST.transform.position.y), Quaternion.identity);
+        // here i can add the cook specific controller when its done
+        //cook.AddComponent<TestAdventurerComponent>();
         AdventurerController cookIfo = cook.GetComponent<AdventurerController>();
         cookIfo.SetAdventurerType(GameInformation.ADVENTURERS.COOK);
         cookIfo.SetHealth(GameInformation.TOTALHEALTH_COOK);
