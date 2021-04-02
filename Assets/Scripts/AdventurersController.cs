@@ -38,10 +38,14 @@ public class AdventurersController : MonoBehaviour
     float turnTimer;
     float turnTimerMax = 5f;
 
+    AdventurerController engineer;
+
     // Start is called before the first frame update
     void Start()
     {
         SetCurrentUser(InitializeCook());
+        //testing
+        engineer = InitializeEngineer();
         playerInTurn = false;
         currIndx = 0;
         turnTimer = 0f;
@@ -81,14 +85,20 @@ public class AdventurersController : MonoBehaviour
 
     }
 
-    void RotateLocation()
+    AdventurerController InitializeEngineer()
     {
-        SnowController newSpot = testingMoves[currIndx];
-        currIndx += 1;
-        currentUser.transform.position = new Vector2(newSpot.transform.position.x, newSpot.transform.position.y);
+        GameObject engineer = Instantiate(adventurerPrefab, new Vector2(startTileTEST.transform.position.x, startTileTEST.transform.position.y), Quaternion.identity);
+        // here i can add the cook specific controller when its done
+        AdventurerController engineerIfo = engineer.GetComponent<AdventurerController>();
+        engineerIfo.SetLocation(startTileTEST.GetComponentInParent<TileController>());
+        engineerIfo.SetMountainLayer(startTileTEST.tag);
+        engineerIfo.SetAdventurerType(GameInformation.ADVENTURERS.ENGINEER);
+        engineerIfo.SetHealth(GameInformation.TOTALHEALTH_ENGINEER);
+        engineerIfo.SetCarryLimit(GameInformation.TOTALCARRY_ENGINEER);
+        engineerIfo.SetMaxTurns(4);
+        engineerIfo.DisplayStats();
+        return engineerIfo;
 
-        if (currIndx == testingMoves.Length) currIndx = 0;
-        testmove = false;
     }
 
     // Update is called once per frame
@@ -101,6 +111,7 @@ public class AdventurersController : MonoBehaviour
                 // players turn is over (all actions used)
                 print("PLAYER DONE");
                 playerInTurn = false;
+                SetCurrentUser(engineer);
             }
             // // need to do player turn stuff here
             //if(testmove) RotateLocation();
@@ -108,5 +119,20 @@ public class AdventurersController : MonoBehaviour
             //if (turnTimer < 0) playerInTurn = false;
             //playerInTurn = false;
         }
+    }
+
+
+    /*
+     * Misc Testing Stuff
+     * 
+     * **/
+    void RotateLocation()
+    {
+        SnowController newSpot = testingMoves[currIndx];
+        currIndx += 1;
+        currentUser.transform.position = new Vector2(newSpot.transform.position.x, newSpot.transform.position.y);
+
+        if (currIndx == testingMoves.Length) currIndx = 0;
+        testmove = false;
     }
 }
