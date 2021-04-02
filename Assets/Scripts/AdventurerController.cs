@@ -160,8 +160,7 @@ public class AdventurerController : MonoBehaviour
     {
         this.currLevel = TagToLayer(tile.tag);
         this.currTileID = tile.GetMyId();
-        //print("Curr Level: " + currLevel);
-        //print("curr id: " + currTileID);
+
     }
 
     public MountainLayerController.LAYER_LEVEL TagToLayer(string tag)
