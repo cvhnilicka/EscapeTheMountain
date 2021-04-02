@@ -41,17 +41,26 @@ public class AdventurersController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentUser = InitializeCook();
+        SetCurrentUser(InitializeCook());
         playerInTurn = false;
         currIndx = 0;
         turnTimer = 0f;
+    }
+
+    void SetCurrentUser(AdventurerController nextUser)
+    {
+        if (currentUser)
+            this.currentUser.tag = "OutOfTurn";
+        nextUser.tag = "Player";
+        this.currentUser = nextUser;
+
     }
 
     public void SetPlayerInTurn(bool inTurn)
     {
         this.playerInTurn = inTurn;
         turnTimer = turnTimerMax;
-        testmove = true;
+        currentUser.StartTurn();
     }
     public bool GetPlayerInTurn() { return this.playerInTurn;  }
 
@@ -61,9 +70,12 @@ public class AdventurersController : MonoBehaviour
         // here i can add the cook specific controller when its done
         //cook.AddComponent<TestAdventurerComponent>();
         AdventurerController cookIfo = cook.GetComponent<AdventurerController>();
+        cookIfo.SetLocation(startTileTEST.GetComponentInParent<TileController>());
+        cookIfo.SetMountainLayer(startTileTEST.tag);
         cookIfo.SetAdventurerType(GameInformation.ADVENTURERS.COOK);
         cookIfo.SetHealth(GameInformation.TOTALHEALTH_COOK);
         cookIfo.SetCarryLimit(GameInformation.TOTALCARRY_COOK);
+        cookIfo.SetMaxTurns(4);
         cookIfo.DisplayStats();
         return cookIfo;
 
@@ -84,10 +96,16 @@ public class AdventurersController : MonoBehaviour
     {
         if (playerInTurn)
         {
+            if (currentUser.GetTurnDone())
+            {
+                // players turn is over (all actions used)
+                print("PLAYER DONE");
+                playerInTurn = false;
+            }
             // // need to do player turn stuff here
-            if(testmove) RotateLocation();
-            turnTimer -= Time.deltaTime;
-            if (turnTimer < 0) playerInTurn = false;
+            //if(testmove) RotateLocation();
+            //turnTimer -= Time.deltaTime;
+            //if (turnTimer < 0) playerInTurn = false;
             //playerInTurn = false;
         }
     }

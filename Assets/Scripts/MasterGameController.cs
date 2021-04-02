@@ -30,7 +30,7 @@ public class MasterGameController : MonoBehaviour
         currentPlayState = PLAY_STATE.WAITING;
         myBoard = GetComponentInChildren<BoardController>();
         adventurers = GetComponentInChildren<AdventurersController>();
-        DisplayGameStates();
+        //DisplayGameStates();
         currentEnvironmentDeck = ShuffleDeck();
         //PrintDecks();
         if (!DeckChecker()) print("Something wrong with deck");
@@ -81,9 +81,10 @@ public class MasterGameController : MonoBehaviour
         {
             currentPlayState = PLAY_STATE.PLAYER;
             adventurers.SetPlayerInTurn(true);
+            // maybe here i can get all moveable-to tiles
+
         }
         UpdateGameStateUI(currentPlayState);
-        //randomTimer = rotateTimer;
     }
 
     // Update is called once per frame
@@ -116,7 +117,7 @@ public class MasterGameController : MonoBehaviour
                 if (adventurers.GetPlayerInTurn())
                 {
                     // player is still making actions
-                    print("PLAYER IN ACTION");
+
                 } else
                 {
                     // player is done
