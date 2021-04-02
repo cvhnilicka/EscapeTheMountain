@@ -12,6 +12,7 @@ public class MasterGameController : MonoBehaviour
     PLAY_STATE currentPlayState;
 
     BoardController myBoard;
+    AdventurersController adventurers;
 
 
     float randomTimer;
@@ -28,7 +29,8 @@ public class MasterGameController : MonoBehaviour
         currentGameState = GAME_STATES.SETUP;
         currentPlayState = PLAY_STATE.WAITING;
         myBoard = GetComponentInChildren<BoardController>();
-        DisplayGameStates();
+        adventurers = GetComponentInChildren<AdventurersController>();
+        //DisplayGameStates();
         currentEnvironmentDeck = ShuffleDeck();
         //PrintDecks();
         if (!DeckChecker()) print("Something wrong with deck");
@@ -61,7 +63,8 @@ public class MasterGameController : MonoBehaviour
         if (currentPlayState == PLAY_STATE.WAITING)
         {
             currentPlayState = PLAY_STATE.PLAYER;
-            
+            adventurers.SetPlayerInTurn(true);
+
         }
         else if (currentPlayState == PLAY_STATE.PLAYER)
         {
@@ -77,9 +80,11 @@ public class MasterGameController : MonoBehaviour
         else if (currentPlayState == PLAY_STATE.ENVIRONMENTPOST)
         {
             currentPlayState = PLAY_STATE.PLAYER;
+            adventurers.SetPlayerInTurn(true);
+            // maybe here i can get all moveable-to tiles
+
         }
         UpdateGameStateUI(currentPlayState);
-        //randomTimer = rotateTimer;
     }
 
     // Update is called once per frame
@@ -105,6 +110,20 @@ public class MasterGameController : MonoBehaviour
                 SwapPlayState();
                 randomTimer = rotateTimer;
 
+            }
+            else if (currentPlayState == PLAY_STATE.PLAYER)
+            {
+                // here will be the player stuff
+                if (adventurers.GetPlayerInTurn())
+                {
+                    // player is still making actions
+
+                } else
+                {
+                    // player is done
+                    SwapPlayState();
+                    randomTimer = rotateTimer;
+                }
             }
             else
             {

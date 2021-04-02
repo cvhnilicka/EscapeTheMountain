@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Peak
+  - Mid
+  - Base
+  - OutOfTurn
   layers:
   - Default
   - TransparentFX
@@ -43,4 +47,7 @@ TagManager:
     locked: 0
   - name: boardinfo
     uniqueID: 3554819085
+    locked: 0
+  - name: adventurers
+    uniqueID: 1262930045
     locked: 0

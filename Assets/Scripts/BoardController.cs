@@ -51,6 +51,8 @@ public class BoardController : MonoBehaviour
         }
     }
 
+    
+
     void Timers()
     {
         randomTimer -= Time.deltaTime;

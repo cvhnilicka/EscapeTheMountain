@@ -7,6 +7,7 @@ public class TileController : MonoBehaviour
     // Children
     SnowController mySnowStack;
     DirectionController myDirection;
+    PolygonCollider2D myCollider;
 
     public int myId;
 
@@ -14,6 +15,7 @@ public class TileController : MonoBehaviour
     {
         mySnowStack = GetComponentInChildren<SnowController>();
         myDirection = GetComponentInChildren<DirectionController>();
+        myCollider = GetComponent<PolygonCollider2D>();
     }
 
     // Getters dude
@@ -56,6 +58,15 @@ public class TileController : MonoBehaviour
     public void SetLeft(bool isleft)
     {
         myDirection.SetLeft(isleft);
+    }
+
+    public SnowController GetSnowController() { return this.mySnowStack; }
+
+    private void OnMouseUpAsButton()
+    {
+        // try to grab the current player and move them here.
+        AdventurerController currentAdventurer = GameObject.FindGameObjectWithTag("Player").GetComponent<AdventurerController>();
+        currentAdventurer.MoveTo(this);
     }
 
 }
