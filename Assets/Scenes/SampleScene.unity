@@ -2731,6 +2731,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f231217ac20548b6ae641f37f740204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  engineerSprite: {fileID: 21300000, guid: f38ed46adec9c4ea593ec5121aff229a, type: 3}
+  cookSprite: {fileID: 21300000, guid: f77a4b1e1e57f4063b966bb2e08e13d6, type: 3}
   adventurerPrefab: {fileID: 4830195790106326991, guid: 5f4f4d5097b1944f7ae761e30f114eaf,
     type: 3}
   startTileTEST: {fileID: 2128916453}

@@ -21,11 +21,15 @@ public class AdventurersController : MonoBehaviour
      * 
      * **/
 
+
+    [Header("Sprites section")]
+    public Sprite engineerSprite;
+    public Sprite cookSprite;
+
     public GameObject adventurerPrefab;
     public SnowController startTileTEST;
 
     public SnowController[] testingMoves;
-    int currIndx;
 
 
     AdventurerController currentUser;
@@ -40,16 +44,42 @@ public class AdventurersController : MonoBehaviour
 
     AdventurerController engineer;
 
+    List<AdventurerController> playingAdventurers;
+    int currPlayerIndex;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        SetCurrentUser(InitializeCook());
+
         //testing
-        engineer = InitializeEngineer();
         playerInTurn = false;
-        currIndx = 0;
+        currPlayerIndex = 0;
         turnTimer = 0f;
+        playingAdventurers = GetPlayingAdventurers();
+        SetCurrentUser(playingAdventurers[0]);
+        //RotateCurrPlayer();
     }
+
+    List<AdventurerController> GetPlayingAdventurers()
+    {
+        List<AdventurerController> newAdventurers = new List<AdventurerController>();
+        newAdventurers.Add(InitializeAdventurer(GameInformation.ADVENTURERS.COOK));
+        newAdventurers.Add(InitializeAdventurer(GameInformation.ADVENTURERS.ENGINEER));
+        newAdventurers.Add(InitializeAdventurer(GameInformation.ADVENTURERS.MOUNTAINEER));
+        return newAdventurers;
+    }
+
+    void RotateCurrPlayer()
+    {
+        currPlayerIndex += 1;
+        if (currPlayerIndex == playingAdventurers.Count) currPlayerIndex = 0;
+        SetCurrentUser(playingAdventurers[currPlayerIndex]);
+        //currentUser = playingAdventurers[currPlayerIndex];
+        //SetCurrentUser(currentUser);
+        
+    }
+
 
     void SetCurrentUser(AdventurerController nextUser)
     {
@@ -62,44 +92,58 @@ public class AdventurersController : MonoBehaviour
 
     public void SetPlayerInTurn(bool inTurn)
     {
+        //print(currentUser.GetAdventurerType() + " : STARTING TURN");
         this.playerInTurn = inTurn;
         turnTimer = turnTimerMax;
         currentUser.StartTurn();
     }
     public bool GetPlayerInTurn() { return this.playerInTurn;  }
 
-    AdventurerController InitializeCook()
+
+
+    AdventurerController InitializeAdventurer(GameInformation.ADVENTURERS adventurerType)
     {
-        GameObject cook = Instantiate(adventurerPrefab, new Vector2(startTileTEST.transform.position.x, startTileTEST.transform.position.y), Quaternion.identity);
-        // here i can add the cook specific controller when its done
-        //cook.AddComponent<TestAdventurerComponent>();
-        AdventurerController cookIfo = cook.GetComponent<AdventurerController>();
-        cookIfo.SetLocation(startTileTEST.GetComponentInParent<TileController>());
-        cookIfo.SetMountainLayer(startTileTEST.tag);
-        cookIfo.SetAdventurerType(GameInformation.ADVENTURERS.COOK);
-        cookIfo.SetHealth(GameInformation.TOTALHEALTH_COOK);
-        cookIfo.SetCarryLimit(GameInformation.TOTALCARRY_COOK);
-        cookIfo.SetMaxTurns(4);
-        cookIfo.DisplayStats();
-        return cookIfo;
+        GameObject adventurer = Instantiate(adventurerPrefab, new Vector2(startTileTEST.transform.position.x, startTileTEST.transform.position.y), Quaternion.identity);
+        AdventurerController adventControl = adventurer.GetComponent<AdventurerController>();
+
+
+
+        switch(adventurerType)
+        {
+            case GameInformation.ADVENTURERS.COOK:
+                adventurer.AddComponent<CookController>();
+                adventControl.GetMySprite().sprite = cookSprite;
+                break;
+            case GameInformation.ADVENTURERS.ENGINEER:
+                adventurer.AddComponent<EngineerController>();
+                adventControl.GetMySprite().sprite = engineerSprite;
+                break;
+            case GameInformation.ADVENTURERS.DOGSLED:
+                adventurer.AddComponent<DogSledController>();
+                adventControl.GetMySprite().sprite = cookSprite; // TEMP
+                break;
+            case GameInformation.ADVENTURERS.MOUNTAINEER:
+                adventurer.AddComponent<MountaineerController>();
+                adventControl.GetMySprite().sprite = cookSprite; // TEMP 
+                break;
+            case GameInformation.ADVENTURERS.SKIER:
+                adventurer.AddComponent<SkierController>();
+                adventControl.GetMySprite().sprite = cookSprite; // TEMP
+                break;
+            case GameInformation.ADVENTURERS.SNOWPATROL:
+                adventurer.AddComponent<SnowPatrolController>();
+                adventControl.GetMySprite().sprite = cookSprite; // TEMP
+                break;
+
+        }
+
+
+
+        adventControl.SetLocation(startTileTEST.GetComponentInParent<TileController>());
+        return adventControl;
 
     }
 
-    AdventurerController InitializeEngineer()
-    {
-        GameObject engineer = Instantiate(adventurerPrefab, new Vector2(startTileTEST.transform.position.x, startTileTEST.transform.position.y), Quaternion.identity);
-        // here i can add the cook specific controller when its done
-        AdventurerController engineerIfo = engineer.GetComponent<AdventurerController>();
-        engineerIfo.SetLocation(startTileTEST.GetComponentInParent<TileController>());
-        engineerIfo.SetMountainLayer(startTileTEST.tag);
-        engineerIfo.SetAdventurerType(GameInformation.ADVENTURERS.ENGINEER);
-        engineerIfo.SetHealth(GameInformation.TOTALHEALTH_ENGINEER);
-        engineerIfo.SetCarryLimit(GameInformation.TOTALCARRY_ENGINEER);
-        engineerIfo.SetMaxTurns(4);
-        engineerIfo.DisplayStats();
-        return engineerIfo;
-
-    }
 
     // Update is called once per frame
     void Update()
@@ -111,7 +155,7 @@ public class AdventurersController : MonoBehaviour
                 // players turn is over (all actions used)
                 print("PLAYER DONE");
                 playerInTurn = false;
-                SetCurrentUser(engineer);
+                RotateCurrPlayer();
             }
             // // need to do player turn stuff here
             //if(testmove) RotateLocation();
@@ -122,17 +166,4 @@ public class AdventurersController : MonoBehaviour
     }
 
 
-    /*
-     * Misc Testing Stuff
-     * 
-     * **/
-    void RotateLocation()
-    {
-        SnowController newSpot = testingMoves[currIndx];
-        currIndx += 1;
-        currentUser.transform.position = new Vector2(newSpot.transform.position.x, newSpot.transform.position.y);
-
-        if (currIndx == testingMoves.Length) currIndx = 0;
-        testmove = false;
-    }
 }

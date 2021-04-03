@@ -54,8 +54,8 @@
     public static int TOTALHEALTH_ENGINEER = 3;
     public static int TOTALCARRY_ENGINEER = 2;
 
-    public static int TOTALHEALTH_SKIER = 4;
-    public static int TOTALCARRY = 2;
+    public static int TOTALHEALTH_SKIER = 3;
+    public static int TOTALCARRY_SKIER = 2;
 
     public static int TOTALHEALTH_MOUNTAINEER = 4;
     public static int TOTALCARRY_MOUNTAINEER = 2;

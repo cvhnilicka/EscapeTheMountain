@@ -64,12 +64,17 @@ public class AdventurerController : MonoBehaviour
 
     private bool turnDone;
 
+    SpriteRenderer mySprite;
 
+    private void Awake()
+    {
+        mySprite = GetComponent<SpriteRenderer>();
+
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -77,6 +82,8 @@ public class AdventurerController : MonoBehaviour
     {
         
     }
+
+    public SpriteRenderer GetMySprite() { return this.mySprite; }
 
 
     /*
@@ -160,6 +167,7 @@ public class AdventurerController : MonoBehaviour
     {
         this.currLevel = TagToLayer(tile.tag);
         this.currTileID = tile.GetMyId();
+        SetMountainLayer(tile.tag);
 
     }
 
